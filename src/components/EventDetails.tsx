@@ -1,11 +1,12 @@
 import React from "react";
-import { MapPin, Calendar } from "lucide-react";
+import { MapPin, Calendar, ExternalLink } from "lucide-react";
 
 export default function EventDetails() {
   return (
     <section id="event-details" className="relative py-24 px-6 bg-burgundy-950 overflow-hidden">
-      {/* Decorative Goose - Bottom Right */}
-      <div className="absolute bottom-0 right-0 w-48 md:w-72 pointer-events-none z-0 opacity-80">
+      
+      {/* Fixed Goose Positioned in Bottom Right */}
+      <div className="absolute bottom-4 right-4 w-32 md:w-48 pointer-events-none z-0">
         <img 
           src={`${import.meta.env.BASE_URL}media/goose.png`} 
           alt="Decorative Goose" 
@@ -35,15 +36,23 @@ export default function EventDetails() {
               <div>
                 <h3 className="text-gold-200 font-medium">The Royal Hall, Cairo</h3>
                 <p className="text-burgundy-200 text-sm mt-1">The Baron Palace Grand Lawn & Hall, Heliopolis, Egypt</p>
-                <p className="text-gold-500 text-xs mt-1">Heliopolis Palace District, Cairo Governor, Egypt</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Map Placeholder */}
-        <div className="bg-burgundy-900/30 p-4 rounded-2xl border border-gold-900/20 h-full min-h-[300px] flex items-center justify-center">
-          <p className="text-gold-400/50 font-serif-lux italic">Map Loading...</p>
+        {/* Live Google Maps Embed */}
+        <div className="bg-burgundy-900/30 p-2 rounded-2xl border border-gold-900/20 h-[300px] w-full overflow-hidden">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3452.124673808064!2d31.32395537568551!3d30.082729315668146!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583e7428f731a5%3A0xe51f0445d045c719!2sBaron%20Empain%20Palace!5e0!3m2!1sen!2seg!4v1720637158732!5m2!1sen!2seg" 
+            width="100%" 
+            height="100%" 
+            style={{ border: 0 }} 
+            allowFullScreen 
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="rounded-xl"
+          ></iframe>
         </div>
       </div>
     </section>
