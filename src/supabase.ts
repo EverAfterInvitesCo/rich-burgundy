@@ -2,7 +2,6 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 let supabaseClient: SupabaseClient | null = null;
 
-// Get credentials from environment variables (GitHub Secrets) or localStorage
 export function getSupabaseCredentials() {
   const url = (import.meta as any).env?.VITE_SUPABASE_URL || localStorage.getItem('wedding_supabase_url') || '';
   const key = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || localStorage.getItem('wedding_supabase_anon_key') || '';
@@ -19,7 +18,6 @@ export function getSupabaseClient(): SupabaseClient | null {
   return null;
 }
 
-// Sync RSVP function
 export async function syncRsvpToSupabase(rsvp: {
   id: string;
   guest_name: string;
@@ -31,7 +29,6 @@ export async function syncRsvpToSupabase(rsvp: {
 }) {
   const client = getSupabaseClient();
   if (!client) throw new Error('Supabase is not configured.');
-  
   const { error } = await client.from('rsvps').upsert(rsvp);
   if (error) throw new Error(error.message);
 }
