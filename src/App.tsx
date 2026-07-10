@@ -65,12 +65,6 @@ export default function App() {
               onError={() => handleMediaError("curtains")}
               className="absolute inset-0 w-full h-full object-cover"
             />
-            <button 
-              onClick={() => setSkipCurtain(true)}
-              className="relative z-10 text-gold-300 border border-gold-300 px-8 py-3 rounded-full hover:bg-gold-300 hover:text-burgundy-950 transition-all uppercase tracking-widest text-sm"
-            >
-              Enter Wedding
-            </button>
           </motion.div>
         )}
       </AnimatePresence>
