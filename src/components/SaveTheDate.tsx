@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
 
 interface SaveTheDateProps {
   mediaErrors: Record<string, boolean>;
@@ -10,11 +11,9 @@ export default function SaveTheDate({ mediaErrors, handleMediaError }: SaveTheDa
 
   useEffect(() => {
     const targetDate = new Date("2026-09-19T00:00:00").getTime();
-
     const timer = setInterval(() => {
       const now = new Date().getTime();
       const difference = targetDate - now;
-
       if (difference > 0) {
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -22,18 +21,15 @@ export default function SaveTheDate({ mediaErrors, handleMediaError }: SaveTheDa
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60),
         });
-      } else {
-        clearInterval(timer);
       }
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
   return (
     <section id="save-the-date" className="relative py-24 px-6 bg-burgundy-950 overflow-hidden">
-      {/* Decorative Lace Panel */}
-      <div className="absolute top-0 right-0 w-32 md:w-64 opacity-20 pointer-events-none">
+      {/* Decorative Lace Panel - Increased opacity to 60% */}
+      <div className="absolute top-0 right-0 w-32 md:w-64 opacity-60 pointer-events-none">
         <img 
           src={`${import.meta.env.BASE_URL}media/lace.png`} 
           alt="Lace Detail" 
@@ -42,7 +38,14 @@ export default function SaveTheDate({ mediaErrors, handleMediaError }: SaveTheDa
         />
       </div>
 
-      <div className="max-w-4xl mx-auto text-center space-y-8">
+      {/* Added Motion Wrapper for Scroll Transition */}
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="max-w-4xl mx-auto text-center space-y-8"
+      >
         <div className="space-y-2">
           <span className="text-gold-300 tracking-[0.2em] text-xs uppercase">September 19, 2026</span>
           <h2 className="font-serif-lux text-4xl md:text-5xl text-white">Save The Date</h2>
@@ -66,7 +69,7 @@ export default function SaveTheDate({ mediaErrors, handleMediaError }: SaveTheDa
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
