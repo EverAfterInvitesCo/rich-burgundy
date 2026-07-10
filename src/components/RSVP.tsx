@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import { syncRsvpToSupabase } from '../lib/supabase';
+// We use a relative path that looks specifically for the file in the parent directory
+import { syncRsvpToSupabase } from '../supabase';
 
-export function RSVPForm() {
+export default function RSVP() {
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submit button clicked!"); // Check if this shows in console
-    
     setIsSubmitting(true);
 
     try {
-      // Small delay or check to ensure client is ready
       await syncRsvpToSupabase({
-        id: crypto.randomUUID(),
+        id: Math.random().toString(36).substring(2, 15),
         guest_name: name,
         attending: true,
         dietary: '',
@@ -22,12 +20,10 @@ export function RSVPForm() {
         message: '',
         created_at: new Date().toISOString()
       });
-      
-      console.log("Supabase sync successful!");
       alert('RSVP sent successfully!');
-      setName(''); // Clear form on success
+      setName('');
     } catch (err) {
-      console.error("Submission Error:", err); // Look here if it reloads
+      console.error('Submission Error:', err);
       alert('Failed to send RSVP. Check console for details.');
     } finally {
       setIsSubmitting(false);
