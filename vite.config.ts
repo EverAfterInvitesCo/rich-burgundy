@@ -5,7 +5,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
   return {
-    // This must match your repository name exactly
     base: '/rich-burgundy/', 
     plugins: [react(), tailwindcss()],
     resolve: {
