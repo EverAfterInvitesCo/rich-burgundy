@@ -9,12 +9,12 @@ interface OurStoryProps {
 export default function OurStory({ mediaErrors, handleMediaError }: OurStoryProps) {
   return (
     <section id="our-story" className="relative py-24 px-6 bg-burgundy-950 overflow-hidden">
-      {/* Decorative Flower - Bottom Left */}
+      {/* Decorative Flowers - Bottom Left */}
       <div className="absolute bottom-0 left-0 w-64 md:w-96 pointer-events-none z-0">
         <img 
-          src={`${import.meta.env.BASE_URL}media/flower.png`} 
+          src={`${import.meta.env.BASE_URL}media/flowers.png`} 
           alt="Floral Detail" 
-          onError={() => handleMediaError("flower")}
+          onError={() => handleMediaError("flowers")}
           className="w-full h-auto opacity-100"
         />
       </div>
