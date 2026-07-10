@@ -19,6 +19,18 @@ export default function Schedule({ mediaErrors, handleMediaError }: ScheduleProp
   return (
     <section id="schedule" className="relative py-24 px-6 bg-burgundy-950 overflow-hidden">
       
+      {/* Re-adding Decorative Fan with explicit path check */}
+      {!mediaErrors["fan"] && (
+        <div className="absolute bottom-0 right-0 w-64 md:w-96 pointer-events-none z-0">
+          <img 
+            src={`${import.meta.env.BASE_URL}media/fan.png`} 
+            alt="Decorative Fan" 
+            onError={() => handleMediaError("fan")}
+            className="w-full h-auto opacity-90"
+          />
+        </div>
+      )}
+
       <div className="relative z-10 max-w-5xl mx-auto space-y-12">
         <div className="text-center space-y-2">
           <span className="text-gold-300 tracking-[0.2em] text-xs uppercase">The Celebration Flow</span>
