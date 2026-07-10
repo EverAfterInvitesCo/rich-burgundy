@@ -14,22 +14,22 @@ export default function Hero({ mediaErrors, handleMediaError, isVideoFile }: Her
       {/* Chandelier Video/Image Background */}
       <div className="absolute inset-0 z-0 bg-burgundy-950">
         {!mediaErrors["chandelier"] ? (
-          isVideoFile("/media/chandelier.MOV") ? (
+          isVideoFile("/media/chandelier.mp4") ? (
             <video 
-              src="/media/chandelier.MOV" 
+              src={`${import.meta.env.BASE_URL}media/chandelier.mp4`}
               autoPlay 
               loop 
               muted 
               playsInline
               onError={() => handleMediaError("chandelier")}
-              className="w-full h-full object-contain opacity-100"
+              className="w-full h-full object-cover opacity-100"
             />
           ) : (
             <img 
-              src="/media/chandelier.MOV" 
+              src={`${import.meta.env.BASE_URL}media/chandelier.mp4`}
               alt="Luxury Chandelier Background"
               onError={() => handleMediaError("chandelier")}
-              className="w-full h-full object-contain opacity-100"
+              className="w-full h-full object-cover opacity-100"
               referrerPolicy="no-referrer"
             />
           )
