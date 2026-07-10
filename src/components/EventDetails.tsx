@@ -1,19 +1,10 @@
 import React from "react";
-import { MapPin, Calendar, ExternalLink } from "lucide-react";
+import { MapPin, Calendar } from "lucide-react";
 
 export default function EventDetails() {
   return (
     <section id="event-details" className="relative py-24 px-6 bg-burgundy-950 overflow-hidden">
       
-      {/* Fixed Goose Positioned in Bottom Right */}
-      <div className="absolute bottom-4 right-4 w-32 md:w-48 pointer-events-none z-0">
-        <img 
-          src={`${import.meta.env.BASE_URL}media/goose.png`} 
-          alt="Decorative Goose" 
-          className="w-full h-auto"
-        />
-      </div>
-
       <div className="relative z-10 max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-8">
           <div className="space-y-2">
