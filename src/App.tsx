@@ -53,21 +53,58 @@ export default function App() {
     else setIsAuthenticated(true);
   };
 
-  const isVideoFile = (url: string) => {
-    const trimmed = url.toLowerCase().split('?')[0];
-    return trimmed.endsWith(".mp4") || trimmed.endsWith(".webm");
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setPhotoBase64(reader.result as string);
+      reader.readAsDataURL(file);
+    }
   };
 
+  const handlePhotoSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!photoBase64 || !uploaderName) return;
+    setIsUploadingPhoto(true);
+    try {
+      const response = await fetch(photoBase64);
+      const blob = await response.blob();
+      const file = new File([blob], `${Date.now()}.png`, { type: 'image/png' });
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('gallery')
+        .upload(`photos/${Date.now()}_${uploaderName.replace(/\s+/g, '_')}.png`, file);
+      if (uploadError) throw uploadError;
+      const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(uploadData.path);
+      const { error: dbError } = await supabase.from('photos').insert([
+        { guest_name: uploaderName, caption: photoCaption, photo_url: urlData.publicUrl }
+      ]);
+      if (dbError) throw dbError;
+      setPhotosList([{ guestName: uploaderName, caption: photoCaption, photoUrl: urlData.publicUrl }, ...photosList]);
+      alert("Photo shared successfully!");
+      setPhotoBase64(null); setUploaderName(""); setPhotoCaption("");
+    } catch (error) {
+      console.error(error); alert("Failed to upload.");
+    } finally {
+      setIsUploadingPhoto(false);
+    }
+  };
+
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      const { data, error } = await supabase.from('photos').select('*').order('created_at', { ascending: false });
+      if (!error && data) setPhotosList(data.map(p => ({ guestName: p.guest_name, caption: p.caption, photoUrl: p.photo_url })));
+    };
+    fetchPhotos();
+  }, []);
+
+  const isVideoFile = (url: string) => url.toLowerCase().split('?')[0].endsWith(".mp4") || url.toLowerCase().split('?')[0].endsWith(".webm");
   const handleMediaError = (key: string) => setMediaErrors((prev) => ({ ...prev, [key]: true }));
   const showMainSite = curtainEnded || skipCurtain;
-
-  // ... (Keep your handlePhotoSelect, handlePhotoSubmit, and useEffect here)
 
   return (
     <div className="min-h-screen bg-burgundy-950 text-burgundy-50 font-sans relative overflow-x-hidden">
       <audio ref={audioRef} src={`${import.meta.env.BASE_URL}media/sparks.mp3`} loop preload="auto" />
 
-      {/* Floating Controls */}
       {showMainSite && (
         <div className="fixed top-6 right-6 z-50 flex gap-4">
           <button onClick={toggleAudio} className="p-3 bg-burgundy-900 rounded-full text-gold-400 border border-gold-400">
@@ -79,7 +116,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Login Portal Modal */}
       {isPortalOpen && (
         <div className="fixed inset-0 z-50 bg-burgundy-950/95 flex items-center justify-center p-6">
           <div className="bg-burgundy-900 p-8 rounded-xl border border-gold-400 w-full max-w-sm text-center space-y-4">
@@ -91,9 +127,7 @@ export default function App() {
                 <button onClick={handleLogin} className="w-full bg-gold-400 p-3 rounded font-bold text-burgundy-950">AUTHORIZE</button>
               </>
             ) : (
-              <div className="text-burgundy-50">
-                <p>Access Granted: Welcome, Yara & Ahmed.</p>
-              </div>
+              <p className="text-burgundy-50">Access Granted: Welcome, Yara & Ahmed.</p>
             )}
             <button onClick={() => setIsPortalOpen(false)} className="text-burgundy-300 text-sm mt-4">Close Portal</button>
           </div>
@@ -102,18 +136,8 @@ export default function App() {
 
       <AnimatePresence>
         {!showMainSite && (
-           <motion.div 
-             key="curtains-screen"
-             initial={{ opacity: 1 }} exit={{ opacity: 0 }}
-             className="fixed inset-0 z-50 flex items-center justify-center bg-burgundy-950 overflow-hidden"
-           >
-             <video 
-               src={`${import.meta.env.BASE_URL}media/curtains.mp4`}
-               autoPlay muted playsInline
-               onEnded={() => setCurtainEnded(true)}
-               onError={() => handleMediaError("curtains")}
-               className="absolute inset-0 w-full h-full object-cover"
-             />
+           <motion.div key="curtains-screen" initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-burgundy-950 overflow-hidden">
+             <video src={`${import.meta.env.BASE_URL}media/curtains.mp4`} autoPlay muted playsInline onEnded={() => setCurtainEnded(true)} onError={() => handleMediaError("curtains")} className="absolute inset-0 w-full h-full object-cover" />
            </motion.div>
         )}
       </AnimatePresence>
