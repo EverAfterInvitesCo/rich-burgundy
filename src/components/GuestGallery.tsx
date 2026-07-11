@@ -51,7 +51,6 @@ export default function GuestGallery({
         ) : (
           /* Fallback flower bloom text */
           <div className="absolute bottom-0 right-0 p-8 text-[11px] text-gold-400/40 select-none font-serif-lux">
-            🌸 Upload '/media/flower.png'
           </div>
         )}
       </div>
