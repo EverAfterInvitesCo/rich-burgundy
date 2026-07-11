@@ -144,33 +144,22 @@ export default function App() {
       <AnimatePresence>
         {!showMainSite && (
            <motion.div key="curtains-screen" initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-burgundy-950 overflow-hidden" style={{ height: '100dvh', width: '100vw' }}>
-             <video src={`${import.meta.env.BASE_URL}media/curtains.mp4`} autoPlay muted playsInline onEnded={() => setCurtainEnded(true)} onError={() => handleMediaError("curtains")} className="absolute inset-0 w-full h-full object-cover" />
+             <video src={`${import.meta.env.BASE_URL}media/curtains.mp4`} autoPlay muted playsInline onEnded={() => setCurtainEnded(true)} className="absolute inset-0 w-full h-full object-cover" />
            </motion.div>
         )}
       </AnimatePresence>
 
       {showMainSite && (
-        <main className="relative">
-          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><Hero mediaErrors={mediaErrors} handleMediaError={handleMediaError} isVideoFile={isVideoFile} /></motion.div>
-          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><SaveTheDate mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
-          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><OurStory mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
-          
-          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 px-8">
-              <div className="flex-1 text-left space-y-6">
-                <h3 className="text-gold-400 uppercase tracking-widest text-sm font-semibold">Join Us</h3>
-                <h1 className="font-serif-lux text-5xl md:text-7xl text-gold-100 leading-tight">Confirm<br />Attendance</h1>
-              </div>
-              <div className="flex-1 w-full"><RSVP rsvpForm={rsvpForm} setRsvpForm={setRsvpForm} rsvpSubmitting={rsvpSubmitting} setRsvpSuccess={setRsvpSuccess} mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></div>
-            </section>
-          </motion.div>
-
-          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><EventDetails /></motion.div>
-          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><Schedule mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
-          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><GuestGallery uploaderName={uploaderName} setUploaderName={setUploaderName} photoCaption={photoCaption} setPhotoCaption={setPhotoCaption} photoBase64={photoBase64} isUploadingPhoto={isUploadingPhoto} fileInputRef={fileInputRef} handlePhotoSelect={handlePhotoSelect} handlePhotoSubmit={handlePhotoSubmit} photosList={photosList} selectedPhoto={selectedPhoto} setSelectedPhoto={setSelectedPhoto} mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
-          
+        <div className="relative">
+          <Hero mediaErrors={mediaErrors} handleMediaError={handleMediaError} isVideoFile={isVideoFile} />
+          <SaveTheDate mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
+          <OurStory mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
+          <RSVP rsvpForm={rsvpForm} setRsvpForm={setRsvpForm} rsvpSubmitting={rsvpSubmitting} setRsvpSuccess={setRsvpSuccess} mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
+          <EventDetails />
+          <Schedule mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
+          <GuestGallery uploaderName={uploaderName} setUploaderName={setUploaderName} photoCaption={photoCaption} setPhotoCaption={setPhotoCaption} photoBase64={photoBase64} isUploadingPhoto={isUploadingPhoto} fileInputRef={fileInputRef} handlePhotoSelect={handlePhotoSelect} handlePhotoSubmit={handlePhotoSubmit} photosList={photosList} selectedPhoto={selectedPhoto} setSelectedPhoto={setSelectedPhoto} mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
           <Footer />
-        </main>
+        </div>
       )}
     </div>
   );
