@@ -139,7 +139,14 @@ export default function App() {
           <SaveTheDate mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
           <OurStory mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
           
-          <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 py-20 px-8">
+          {/* Animated RSVP Section */}
+          <motion.section 
+            initial={{ opacity: 0, y: 50 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 py-20 px-8"
+          >
             <div className="flex-1 text-left space-y-6">
               <h3 className="text-gold-400 uppercase tracking-widest text-sm font-semibold">Join Us</h3>
               <h1 className="font-serif-lux text-5xl md:text-7xl text-gold-100 leading-tight">
@@ -161,7 +168,7 @@ export default function App() {
                 handleMediaError={handleMediaError} 
               />
             </div>
-          </section>
+          </motion.section>
 
           <EventDetails />
           <Schedule mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
