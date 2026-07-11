@@ -119,7 +119,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Organizer Portal: No animations */}
       {isPortalOpen && (
         <div className="fixed inset-0 z-[101] bg-burgundy-950/80 backdrop-blur-sm flex items-center justify-center p-6">
           <div className="bg-burgundy-900 p-8 rounded-2xl border border-gold-400/30 shadow-2xl w-full max-w-sm text-center space-y-6">
@@ -146,18 +145,29 @@ export default function App() {
         </div>
       )}
 
-      {/* Curtain: Forced full screen mobile */}
       <AnimatePresence>
         {!showMainSite && (
-           <motion.div key="curtains-screen" initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-burgundy-950">
-             <video src={`${import.meta.env.BASE_URL}media/curtains.mp4`} autoPlay muted playsInline onEnded={() => setCurtainEnded(true)} className="w-full h-full object-cover" />
+           <motion.div 
+             key="curtains-screen" 
+             initial={{ opacity: 1 }} 
+             exit={{ opacity: 0 }} 
+             className="fixed inset-0 z-[100] bg-burgundy-950"
+             style={{ height: '100dvh', width: '100vw' }}
+           >
+             <video 
+               src={`${import.meta.env.BASE_URL}media/curtains.mp4`} 
+               autoPlay 
+               muted 
+               playsInline 
+               onEnded={() => setCurtainEnded(true)} 
+               className="absolute inset-0 w-full h-full object-cover" 
+             />
            </motion.div>
         )}
       </AnimatePresence>
 
       {showMainSite && (
         <div className="relative">
-          {/* Uniform spacing using py-20 for every section */}
           <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><Hero mediaErrors={mediaErrors} handleMediaError={handleMediaError} isVideoFile={isVideoFile} /></motion.div>
           <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><SaveTheDate mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
           <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><OurStory mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
