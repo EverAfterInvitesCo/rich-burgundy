@@ -16,9 +16,8 @@ export default function RSVP() {
     setIsSubmitting(true);
 
     try {
-      // Ensure the object keys match your Supabase columns exactly
+      // ID removed: Database handles auto-incrementing 'bigint' IDs automatically
       await syncRsvpToSupabase({
-        id: String(Math.random().toString(36).substring(2, 15)),
         guest_name: formData.name,
         attending: formData.attending,
         dietary: formData.dietary,
@@ -28,7 +27,7 @@ export default function RSVP() {
       });
       
       alert('RSVP sent successfully!');
-      // Reset form
+      // Reset form fields
       setFormData({ name: '', attending: true, guests_count: 0, dietary: '', message: '' });
     } catch (err) {
       console.error('Submission Error:', err);
