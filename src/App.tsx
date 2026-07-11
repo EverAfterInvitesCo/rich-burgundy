@@ -25,7 +25,7 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
-  const [rsvpList, setRsvpList] = useState<any[]>([]); // Added RSVP State
+  const [rsvpList, setRsvpList] = useState<any[]>([]);
   const [mediaErrors, setMediaErrors] = useState<Record<string, boolean>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
@@ -54,7 +54,6 @@ export default function App() {
     else setIsAuthenticated(true);
   };
 
-  // Fetch RSVPs and Photos
   useEffect(() => {
     const fetchPortalData = async () => {
       const { data: rsvps } = await supabase.from('rsvps').select('*');
@@ -132,11 +131,17 @@ export default function App() {
               </>
             ) : (
               <div className="text-burgundy-50 space-y-4">
-                <p className="font-bold border-b border-gold-400 pb-2">RSVP List</p>
-                <div className="max-h-64 overflow-y-auto text-left text-sm space-y-2">
+                <div className="border-b border-gold-400 pb-2">
+                  <h3 className="text-gold-400 font-bold text-lg">Total RSVPs: {rsvpList.length}</h3>
+                </div>
+                <div className="max-h-80 overflow-y-auto text-left text-sm space-y-4">
                   {rsvpList.map((rsvp, index) => (
-                    <div key={index} className="border-b border-burgundy-700 py-1">
-                      {rsvp.guest_name} - {rsvp.attending ? "Attending" : "Declining"}
+                    <div key={index} className="border-b border-burgundy-700 pb-2 space-y-1">
+                      <p className="font-bold text-gold-200">{rsvp.guest_name} — {rsvp.attending ? "Attending" : "Declining"}</p>
+                      <p className="text-xs text-burgundy-200">
+                        Extra Guests: {rsvp.guests_count} | Dietary: {rsvp.dietary}
+                      </p>
+                      {rsvp.message && <p className="text-xs italic text-gold-400/80">"{rsvp.message}"</p>}
                     </div>
                   ))}
                 </div>
