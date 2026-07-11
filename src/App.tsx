@@ -119,95 +119,62 @@ export default function App() {
         </div>
       )}
 
+      {/* Organizer Portal: No animations */}
       {isPortalOpen && (
-        <div className="fixed inset-0 z-50 bg-burgundy-950/80 backdrop-blur-sm flex items-center justify-center p-6">
-          <div className="bg-burgundy-900 p-8 rounded-2xl border border-gold-400/30 shadow-2xl w-full max-w-sm text-center space-y-6 relative overflow-hidden">
+        <div className="fixed inset-0 z-[101] bg-burgundy-950/80 backdrop-blur-sm flex items-center justify-center p-6">
+          <div className="bg-burgundy-900 p-8 rounded-2xl border border-gold-400/30 shadow-2xl w-full max-w-sm text-center space-y-6">
             <button onClick={() => setIsPortalOpen(false)} className="absolute top-4 right-4 text-gold-400">
               <X size={20} />
             </button>
-
             <h2 className="text-gold-400 font-serif text-3xl">Organizer Portal</h2>
-            
             {!isAuthenticated ? (
               <div className="space-y-3">
-                <input type="email" placeholder="Email" className="w-full p-3 bg-burgundy-950 border border-burgundy-800 rounded-lg text-white focus:border-gold-400 outline-none transition" onChange={(e) => setEmail(e.target.value)} />
-                <input type="password" placeholder="Password" className="w-full p-3 bg-burgundy-950 border border-burgundy-800 rounded-lg text-white focus:border-gold-400 outline-none transition" onChange={(e) => setPassword(e.target.value)} />
-                <button onClick={handleLogin} className="w-full bg-gold-400 p-3 rounded-lg font-bold text-burgundy-950 hover:bg-gold-300 transition-all transform active:scale-95">AUTHORIZE</button>
+                <input type="email" placeholder="Email" className="w-full p-3 bg-burgundy-950 border border-burgundy-800 rounded-lg text-white" onChange={(e) => setEmail(e.target.value)} />
+                <input type="password" placeholder="Password" className="w-full p-3 bg-burgundy-950 border border-burgundy-800 rounded-lg text-white" onChange={(e) => setPassword(e.target.value)} />
+                <button onClick={handleLogin} className="w-full bg-gold-400 p-3 rounded-lg font-bold text-burgundy-950">AUTHORIZE</button>
               </div>
             ) : (
-              <div className="text-burgundy-50 space-y-4">
-                <div className="border-b border-gold-400/30 pb-2">
-                  <h3 className="text-gold-400 font-bold text-lg">Total RSVPs: {rsvpList.length}</h3>
-                </div>
-                <div className="max-h-80 overflow-y-auto text-left text-sm space-y-4">
-                  {rsvpList.map((rsvp, index) => (
-                    <div key={index} className="border-b border-burgundy-700/50 pb-2 space-y-1 hover:bg-burgundy-800/30 p-2 rounded transition">
-                      <p className="font-bold text-gold-200">{rsvp.guest_name} — {rsvp.attending ? "Attending" : "Declining"}</p>
-                      <p className="text-xs text-burgundy-200">Extra Guests: {rsvp.guests_count} | Dietary: {rsvp.dietary}</p>
-                      {rsvp.message && <p className="text-xs italic text-gold-400/80">"{rsvp.message}"</p>}
-                    </div>
-                  ))}
-                </div>
+              <div className="max-h-80 overflow-y-auto text-left text-sm space-y-4">
+                {rsvpList.map((rsvp, index) => (
+                  <div key={index} className="border-b border-burgundy-700/50 pb-2">
+                    <p className="font-bold text-gold-200">{rsvp.guest_name} — {rsvp.attending ? "Attending" : "Declining"}</p>
+                  </div>
+                ))}
               </div>
             )}
           </div>
         </div>
       )}
 
+      {/* Curtain: Forced full screen mobile */}
       <AnimatePresence>
         {!showMainSite && (
-           <motion.div key="curtains-screen" initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-burgundy-950 overflow-hidden">
-             <video src={`${import.meta.env.BASE_URL}media/curtains.mp4`} autoPlay muted playsInline onEnded={() => setCurtainEnded(true)} onError={() => handleMediaError("curtains")} className="absolute inset-0 w-full h-full object-cover" />
+           <motion.div key="curtains-screen" initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-burgundy-950">
+             <video src={`${import.meta.env.BASE_URL}media/curtains.mp4`} autoPlay muted playsInline onEnded={() => setCurtainEnded(true)} className="w-full h-full object-cover" />
            </motion.div>
         )}
       </AnimatePresence>
 
       {showMainSite && (
         <div className="relative">
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} viewport={{ once: true }}>
-            <Hero mediaErrors={mediaErrors} handleMediaError={handleMediaError} isVideoFile={isVideoFile} />
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} viewport={{ once: true }}>
-            <SaveTheDate mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} viewport={{ once: true }}>
-            <OurStory mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
-          </motion.div>
+          {/* Uniform spacing using py-20 for every section */}
+          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><Hero mediaErrors={mediaErrors} handleMediaError={handleMediaError} isVideoFile={isVideoFile} /></motion.div>
+          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><SaveTheDate mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
+          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><OurStory mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
           
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} viewport={{ once: true }}>
-            <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 py-20 px-8">
-              <div className="flex-1 text-left space-y-6">
-                <h3 className="text-gold-400 uppercase tracking-widest text-sm font-semibold">Join Us</h3>
-                <h1 className="font-serif-lux text-5xl md:text-7xl text-gold-100 leading-tight">Confirm<br />Attendance</h1>
-                <p className="text-burgundy-200 text-lg max-w-md">Please RSVP by August 15, 2026.</p>
-              </div>
-              <div className="flex-1 w-full">
-                <RSVP rsvpForm={rsvpForm} setRsvpForm={setRsvpForm} rsvpSubmitting={rsvpSubmitting} setRsvpSuccess={setRsvpSuccess} mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
-              </div>
-            </section>
+          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+             <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 px-8">
+               <div className="flex-1 text-left space-y-6">
+                 <h3 className="text-gold-400 uppercase tracking-widest text-sm font-semibold">Join Us</h3>
+                 <h1 className="font-serif-lux text-5xl md:text-7xl text-gold-100 leading-tight">Confirm Attendance</h1>
+               </div>
+               <div className="flex-1 w-full"><RSVP rsvpForm={rsvpForm} setRsvpForm={setRsvpForm} rsvpSubmitting={rsvpSubmitting} setRsvpSuccess={setRsvpSuccess} mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></div>
+             </section>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} viewport={{ once: true }}>
-            <EventDetails />
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} viewport={{ once: true }}>
-            <Schedule mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} viewport={{ once: true }}>
-            <GuestGallery 
-              uploaderName={uploaderName} setUploaderName={setUploaderName} 
-              photoCaption={photoCaption} setPhotoCaption={setPhotoCaption} 
-              photoBase64={photoBase64} isUploadingPhoto={isUploadingPhoto} 
-              fileInputRef={fileInputRef} handlePhotoSelect={handlePhotoSelect} 
-              handlePhotoSubmit={handlePhotoSubmit} photosList={photosList} 
-              selectedPhoto={selectedPhoto} setSelectedPhoto={setSelectedPhoto} 
-              mediaErrors={mediaErrors} handleMediaError={handleMediaError} 
-            />
-          </motion.div>
+          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><EventDetails /></motion.div>
+          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><Schedule mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
+          <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><GuestGallery uploaderName={uploaderName} setUploaderName={setUploaderName} photoCaption={photoCaption} setPhotoCaption={setPhotoCaption} photoBase64={photoBase64} isUploadingPhoto={isUploadingPhoto} fileInputRef={fileInputRef} handlePhotoSelect={handlePhotoSelect} handlePhotoSubmit={handlePhotoSubmit} photosList={photosList} selectedPhoto={selectedPhoto} setSelectedPhoto={setSelectedPhoto} mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
           
           <Footer />
         </div>
