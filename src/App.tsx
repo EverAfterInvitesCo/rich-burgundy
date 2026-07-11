@@ -120,27 +120,4 @@ export default function App() {
             key="curtains-screen"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-burgundy-950 overflow-hidden"
-          >
-            <video 
-              src={`${import.meta.env.BASE_URL}media/curtains.mp4`}
-              autoPlay muted playsInline
-              onEnded={() => setCurtainEnded(true)}
-              onError={() => handleMediaError("curtains")}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {showMainSite && (
-        <div className="relative">
-          <Hero mediaErrors={mediaErrors} handleMediaError={handleMediaError} isVideoFile={isVideoFile} />
-          <SaveTheDate mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
-          <OurStory mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
-          
-          {/* Side-by-Side RSVP Section */}
-          <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 py-20 px-8">
-            <div className="flex-1 text-left space-y-6">
-              <h3 className="text-gold-400 uppercase tracking-widest text-sm font-semibold">Join Us</h3>
-              <h1 className="font-serif-lux text-5
+            className="fixed inset-0 z-50 flex items-center justify
