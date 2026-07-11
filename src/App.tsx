@@ -151,13 +151,13 @@ export default function App() {
 
       {showMainSite && (
         <div className="relative">
-          <Hero mediaErrors={mediaErrors} handleMediaError={handleMediaError} isVideoFile={isVideoFile} />
-          <SaveTheDate mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
-          <OurStory mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
-          <RSVP rsvpForm={rsvpForm} setRsvpForm={setRsvpForm} rsvpSubmitting={rsvpSubmitting} setRsvpSuccess={setRsvpSuccess} mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
-          <EventDetails />
-          <Schedule mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
-          <GuestGallery uploaderName={uploaderName} setUploaderName={setUploaderName} photoCaption={photoCaption} setPhotoCaption={setPhotoCaption} photoBase64={photoBase64} isUploadingPhoto={isUploadingPhoto} fileInputRef={fileInputRef} handlePhotoSelect={handlePhotoSelect} handlePhotoSubmit={handlePhotoSubmit} photosList={photosList} selectedPhoto={selectedPhoto} setSelectedPhoto={setSelectedPhoto} mediaErrors={mediaErrors} handleMediaError={handleMediaError} />
+          <div className="py-20"><Hero mediaErrors={mediaErrors} handleMediaError={handleMediaError} isVideoFile={isVideoFile} /></div>
+          <div className="py-20"><SaveTheDate mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></div>
+          <div className="py-20"><OurStory mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></div>
+          <div className="py-20"><RSVP rsvpForm={rsvpForm} setRsvpForm={setRsvpForm} rsvpSubmitting={rsvpSubmitting} setRsvpSuccess={setRsvpSuccess} mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></div>
+          <div className="py-20"><EventDetails /></div>
+          <div className="py-20"><Schedule mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></div>
+          <div className="py-20"><GuestGallery uploaderName={uploaderName} setUploaderName={setUploaderName} photoCaption={photoCaption} setPhotoCaption={setPhotoCaption} photoBase64={photoBase64} isUploadingPhoto={isUploadingPhoto} fileInputRef={fileInputRef} handlePhotoSelect={handlePhotoSelect} handlePhotoSubmit={handlePhotoSubmit} photosList={photosList} selectedPhoto={selectedPhoto} setSelectedPhoto={setSelectedPhoto} mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></div>
           <Footer />
         </div>
       )}
