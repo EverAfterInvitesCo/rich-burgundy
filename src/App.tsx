@@ -160,7 +160,7 @@ export default function App() {
                muted 
                playsInline 
                onEnded={() => setCurtainEnded(true)} 
-               className="absolute inset-0 w-full h-full object-cover" 
+               className="w-full h-full object-cover" 
              />
            </motion.div>
         )}
