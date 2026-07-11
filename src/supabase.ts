@@ -1,34 +1,32 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
-let supabaseClient: SupabaseClient | null = null;
+// Initialize the Supabase client
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export function getSupabaseCredentials() {
-  const url = (import.meta as any).env?.VITE_SUPABASE_URL || localStorage.getItem('wedding_supabase_url') || '';
-  const key = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || localStorage.getItem('wedding_supabase_anon_key') || '';
-  return { url, key };
-}
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export function getSupabaseClient(): SupabaseClient | null {
-  if (supabaseClient) return supabaseClient;
-  const { url, key } = getSupabaseCredentials();
-  if (url && key) {
-    supabaseClient = createClient(url, key, { auth: { persistSession: false } });
-    return supabaseClient;
+/**
+ * Helper to sync RSVP to Supabase
+ * We remove the 'id' field entirely to let the DB auto-increment it.
+ */
+export async function syncRsvpToSupabase(rsvpData) {
+  const { data, error } = await supabase
+    .from('rsvps')
+    .insert([
+      {
+        guest_name: rsvpData.guest_name,
+        attending: rsvpData.attending,
+        dietary: rsvpData.dietary,
+        guests_count: rsvpData.guests_count,
+        message: rsvpData.message,
+        created_at: rsvpData.created_at
+      }
+    ]);
+
+  if (error) {
+    console.error('Supabase Error:', error);
+    throw error;
   }
-  return null;
-}
-
-export async function syncRsvpToSupabase(rsvp: {
-  id: string;
-  guest_name: string;
-  attending: boolean;
-  dietary: string;
-  guests_count: number;
-  message: string;
-  created_at: string;
-}) {
-  const client = getSupabaseClient();
-  if (!client) throw new Error('Supabase is not configured.');
-  const { error } = await client.from('rsvps').upsert(rsvp);
-  if (error) throw new Error(error.message);
+  return data;
 }
