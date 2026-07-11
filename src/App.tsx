@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { createClient } from "@supabase/supabase-js";
-import { Lock, Music, Music4 } from "lucide-react";
+import { Lock, Music, Music4, X } from "lucide-react";
 import Hero from "./components/Hero";
 import SaveTheDate from "./components/SaveTheDate";
 import OurStory from "./components/OurStory";
@@ -119,38 +119,53 @@ export default function App() {
         </div>
       )}
 
-      {isPortalOpen && (
-        <div className="fixed inset-0 z-50 bg-burgundy-950/95 flex items-center justify-center p-6">
-          <div className="bg-burgundy-900 p-8 rounded-xl border border-gold-400 w-full max-w-sm text-center space-y-4">
-            <h2 className="text-gold-400 font-serif text-2xl">Organizer Portal</h2>
-            {!isAuthenticated ? (
-              <>
-                <input type="email" placeholder="Email" className="w-full p-3 bg-burgundy-950 rounded text-white" onChange={(e) => setEmail(e.target.value)} />
-                <input type="password" placeholder="Password" className="w-full p-3 bg-burgundy-950 rounded text-white" onChange={(e) => setPassword(e.target.value)} />
-                <button onClick={handleLogin} className="w-full bg-gold-400 p-3 rounded font-bold text-burgundy-950">AUTHORIZE</button>
-              </>
-            ) : (
-              <div className="text-burgundy-50 space-y-4">
-                <div className="border-b border-gold-400 pb-2">
-                  <h3 className="text-gold-400 font-bold text-lg">Total RSVPs: {rsvpList.length}</h3>
+      <AnimatePresence>
+        {isPortalOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-burgundy-950/80 backdrop-blur-sm flex items-center justify-center p-6"
+          >
+            <motion.div 
+              initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
+              className="bg-burgundy-900 p-8 rounded-2xl border border-gold-400/30 shadow-2xl w-full max-w-sm text-center space-y-6 relative overflow-hidden"
+            >
+              <button onClick={() => setIsPortalOpen(false)} className="absolute top-4 right-4 text-gold-400">
+                <X size={20} />
+              </button>
+
+              <h2 className="text-gold-400 font-serif text-3xl">Organizer Portal</h2>
+              
+              {!isAuthenticated ? (
+                <div className="space-y-3">
+                  <input type="email" placeholder="Email" className="w-full p-3 bg-burgundy-950 border border-burgundy-800 rounded-lg text-white focus:border-gold-400 outline-none transition" onChange={(e) => setEmail(e.target.value)} />
+                  <input type="password" placeholder="Password" className="w-full p-3 bg-burgundy-950 border border-burgundy-800 rounded-lg text-white focus:border-gold-400 outline-none transition" onChange={(e) => setPassword(e.target.value)} />
+                  <button onClick={handleLogin} className="w-full bg-gold-400 p-3 rounded-lg font-bold text-burgundy-950 hover:bg-gold-300 transition-all transform active:scale-95">AUTHORIZE</button>
                 </div>
-                <div className="max-h-80 overflow-y-auto text-left text-sm space-y-4">
-                  {rsvpList.map((rsvp, index) => (
-                    <div key={index} className="border-b border-burgundy-700 pb-2 space-y-1">
-                      <p className="font-bold text-gold-200">{rsvp.guest_name} — {rsvp.attending ? "Attending" : "Declining"}</p>
-                      <p className="text-xs text-burgundy-200">
-                        Extra Guests: {rsvp.guests_count} | Dietary: {rsvp.dietary}
-                      </p>
-                      {rsvp.message && <p className="text-xs italic text-gold-400/80">"{rsvp.message}"</p>}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            <button onClick={() => setIsPortalOpen(false)} className="text-burgundy-300 text-sm mt-4">Close Portal</button>
-          </div>
-        </div>
-      )}
+              ) : (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-burgundy-50 space-y-4">
+                  <div className="border-b border-gold-400/30 pb-2">
+                    <h3 className="text-gold-400 font-bold text-lg">Total RSVPs: {rsvpList.length}</h3>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto text-left text-sm space-y-4">
+                    {rsvpList.map((rsvp, index) => (
+                      <motion.div 
+                        key={index}
+                        initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="border-b border-burgundy-700/50 pb-2 space-y-1 hover:bg-burgundy-800/30 p-2 rounded transition"
+                      >
+                        <p className="font-bold text-gold-200">{rsvp.guest_name} — {rsvp.attending ? "Attending" : "Declining"}</p>
+                        <p className="text-xs text-burgundy-200">Extra Guests: {rsvp.guests_count} | Dietary: {rsvp.dietary}</p>
+                        {rsvp.message && <p className="text-xs italic text-gold-400/80">"{rsvp.message}"</p>}
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {!showMainSite && (
