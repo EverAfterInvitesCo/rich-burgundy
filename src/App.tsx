@@ -25,6 +25,7 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
+  const [rsvpList, setRsvpList] = useState<any[]>([]); // Added RSVP State
   const [mediaErrors, setMediaErrors] = useState<Record<string, boolean>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
@@ -52,6 +53,17 @@ export default function App() {
     if (error) alert("Login failed: " + error.message);
     else setIsAuthenticated(true);
   };
+
+  // Fetch RSVPs and Photos
+  useEffect(() => {
+    const fetchPortalData = async () => {
+      const { data: rsvps } = await supabase.from('rsvps').select('*');
+      const { data: photos } = await supabase.from('photos').select('*').order('created_at', { ascending: false });
+      if (rsvps) setRsvpList(rsvps);
+      if (photos) setPhotosList(photos.map(p => ({ guestName: p.guest_name, caption: p.caption, photoUrl: p.photo_url })));
+    };
+    fetchPortalData();
+  }, []);
 
   const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -89,14 +101,6 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    const fetchPhotos = async () => {
-      const { data, error } = await supabase.from('photos').select('*').order('created_at', { ascending: false });
-      if (!error && data) setPhotosList(data.map(p => ({ guestName: p.guest_name, caption: p.caption, photoUrl: p.photo_url })));
-    };
-    fetchPhotos();
-  }, []);
-
   const isVideoFile = (url: string) => url.toLowerCase().split('?')[0].endsWith(".mp4") || url.toLowerCase().split('?')[0].endsWith(".webm");
   const handleMediaError = (key: string) => setMediaErrors((prev) => ({ ...prev, [key]: true }));
   const showMainSite = curtainEnded || skipCurtain;
@@ -127,7 +131,16 @@ export default function App() {
                 <button onClick={handleLogin} className="w-full bg-gold-400 p-3 rounded font-bold text-burgundy-950">AUTHORIZE</button>
               </>
             ) : (
-              <p className="text-burgundy-50">Access Granted: Welcome, Yara & Ahmed.</p>
+              <div className="text-burgundy-50 space-y-4">
+                <p className="font-bold border-b border-gold-400 pb-2">RSVP List</p>
+                <div className="max-h-64 overflow-y-auto text-left text-sm space-y-2">
+                  {rsvpList.map((rsvp, index) => (
+                    <div key={index} className="border-b border-burgundy-700 py-1">
+                      {rsvp.guest_name} - {rsvp.attending ? "Attending" : "Declining"}
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
             <button onClick={() => setIsPortalOpen(false)} className="text-burgundy-300 text-sm mt-4">Close Portal</button>
           </div>
