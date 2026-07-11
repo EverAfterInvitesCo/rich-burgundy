@@ -14,9 +14,11 @@ export default function RSVP() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+
     try {
+      // Ensure the object keys match your Supabase columns exactly
       await syncRsvpToSupabase({
-        id: Math.random().toString(36).substring(2, 15),
+        id: String(Math.random().toString(36).substring(2, 15)),
         guest_name: formData.name,
         attending: formData.attending,
         dietary: formData.dietary,
@@ -24,11 +26,13 @@ export default function RSVP() {
         message: formData.message,
         created_at: new Date().toISOString()
       });
+      
       alert('RSVP sent successfully!');
+      // Reset form
       setFormData({ name: '', attending: true, guests_count: 0, dietary: '', message: '' });
     } catch (err) {
-      console.error(err);
-      alert('Failed to send RSVP.');
+      console.error('Submission Error:', err);
+      alert('Failed to send RSVP. Please check the console.');
     } finally {
       setIsSubmitting(false);
     }
