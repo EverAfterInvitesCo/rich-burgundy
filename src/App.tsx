@@ -8,6 +8,7 @@ import EventDetails from "./components/EventDetails";
 import Schedule from "./components/Schedule";
 import RSVP from "./components/RSVP";
 import GuestGallery from "./components/GuestGallery";
+import Footer from "./components/Footer";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -169,6 +170,8 @@ export default function App() {
             selectedPhoto={selectedPhoto} setSelectedPhoto={setSelectedPhoto} 
             mediaErrors={mediaErrors} handleMediaError={handleMediaError} 
           />
+          
+          <Footer />
         </div>
       )}
     </div>
