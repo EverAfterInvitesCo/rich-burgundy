@@ -11,6 +11,8 @@ import RSVP from "./components/RSVP";
 import GuestGallery from "./components/GuestGallery";
 import Footer from "./components/Footer";
 
+// Note: Removed Lace component import here
+
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
   import.meta.env.VITE_SUPABASE_ANON_KEY
@@ -105,8 +107,10 @@ export default function App() {
   const showMainSite = curtainEnded || skipCurtain;
 
   return (
-    <div className="min-h-screen bg-burgundy-950 text-burgundy-50 font-sans relative overflow-x-hidden">
+    <div className="min-h-screen bg-burgundy-950 text-burgundy-50 font-sans relative overflow-x-hidden w-full">
       <audio ref={audioRef} src={`${import.meta.env.BASE_URL}media/sparks.mp3`} loop preload="auto" />
+
+      {/* Removed the <Lace /> component call here */}
 
       {showMainSite && (
         <div className="fixed top-6 right-6 z-50 flex gap-4">
@@ -122,9 +126,7 @@ export default function App() {
       {isPortalOpen && (
         <div className="fixed inset-0 z-[101] bg-burgundy-950/80 backdrop-blur-sm flex items-center justify-center p-6">
           <div className="bg-burgundy-900 p-8 rounded-2xl border border-gold-400/30 shadow-2xl w-full max-w-sm text-center space-y-6">
-            <button onClick={() => setIsPortalOpen(false)} className="absolute top-4 right-4 text-gold-400">
-              <X size={20} />
-            </button>
+            <button onClick={() => setIsPortalOpen(false)} className="absolute top-4 right-4 text-gold-400"><X size={20} /></button>
             <h2 className="text-gold-400 font-serif text-3xl">Organizer Portal</h2>
             {!isAuthenticated ? (
               <div className="space-y-3">
@@ -147,27 +149,15 @@ export default function App() {
 
       <AnimatePresence>
         {!showMainSite && (
-           <motion.div 
-             key="curtains-screen" 
-             initial={{ opacity: 1 }} 
-             exit={{ opacity: 0 }} 
-             className="fixed inset-0 z-[100] bg-burgundy-950"
-             style={{ height: '100dvh', width: '100vw' }}
-           >
-             <video 
-               src={`${import.meta.env.BASE_URL}media/curtains.mp4`} 
-               autoPlay 
-               muted 
-               playsInline 
-               onEnded={() => setCurtainEnded(true)} 
-               className="w-full h-full object-cover" 
-             />
+           <motion.div key="curtains-screen" initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-burgundy-950" style={{ height: '100dvh', width: '100vw' }}>
+             <video src={`${import.meta.env.BASE_URL}media/curtains.mp4`} autoPlay muted playsInline onEnded={() => setCurtainEnded(true)} className="w-full h-full object-cover" />
            </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Main content structure with consistent vertical padding */}
       {showMainSite && (
-        <div className="relative">
+        <main className="w-full">
           <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><Hero mediaErrors={mediaErrors} handleMediaError={handleMediaError} isVideoFile={isVideoFile} /></motion.div>
           <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><SaveTheDate mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
           <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><OurStory mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
@@ -187,7 +177,7 @@ export default function App() {
           <motion.div className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><GuestGallery uploaderName={uploaderName} setUploaderName={setUploaderName} photoCaption={photoCaption} setPhotoCaption={setPhotoCaption} photoBase64={photoBase64} isUploadingPhoto={isUploadingPhoto} fileInputRef={fileInputRef} handlePhotoSelect={handlePhotoSelect} handlePhotoSubmit={handlePhotoSubmit} photosList={photosList} selectedPhoto={selectedPhoto} setSelectedPhoto={setSelectedPhoto} mediaErrors={mediaErrors} handleMediaError={handleMediaError} /></motion.div>
           
           <Footer />
-        </div>
+        </main>
       )}
     </div>
   );
